@@ -1,0 +1,14 @@
+{
+  "welcomeFile": "/expiryPlugin/index.html",
+  "authenticationMethod": "none",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/expiryPlugin/(.*)$",
+      "target": "$1",
+      "localDir": "webapp"
+    }
+  ]
+}

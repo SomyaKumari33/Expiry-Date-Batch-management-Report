@@ -1,0 +1,15 @@
+{
+	"components": [
+		{
+			"id": "expiryPlugin",
+			"type": "VIEW_PLUGIN",
+			"allowMultipleInstances": false,
+			"name": "company.custom.plugins.expiryPlugin.expiryPlugin",
+			"propertyEditor": "company.custom.plugins.expiryPlugin.expiryPlugin.builder.PropertyEditor",
+			"i18n": "company.custom.plugins.expiryPlugin.expiryPlugin.i18n.i18n",
+            "productionProcessEnabled": true,
+           "productionProcessTitle": "expiryPlugin",
+			"supportedPodTypes": ["WORK_CENTER","OPERATION","ORDER"]
+		}   
+	]
+}

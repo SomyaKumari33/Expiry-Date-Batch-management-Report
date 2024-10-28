@@ -1,0 +1,187 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:svm="sap.ui.comp.smartvariants"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="company.custom.plugins.expiryPlugin.expiryPlugin.controller.MainView"
+    width="100%"
+    height="100%"
+>
+    <!-- <Panel 
+                id="panelPlugin"  
+                width="100%"
+                height="100%"
+                expandable="false"
+                expanded="false"
+                accessibleRole="Region"
+                backgroundDesign="Transparent"
+                class="sapUiNoContentPadding">  
+        <headerToolbar>
+            <Toolbar height="3rem">
+                <Button
+                    id="backButton"
+                    visible="false"
+                    text="{i18n>template.back.btn}"
+                    tooltip="{i18n>template.back.tooltip}"
+                    icon="sap-icon://nav-back"
+                    press="onBackPress"/>
+                <Title id="headerTitle" text=""/>
+                <ToolbarSpacer/>
+                <Button
+                    id="closeButton"
+                    visible="false"
+                    tooltip="{i18n>template.close.tooltip}"
+                    icon="sap-icon://decline"
+                    press="onClosePress"/>
+            </Toolbar>
+        </headerToolbar>
+        <content> 
+            <Text id="textPlugin" text="template" class="textFontSize" textAlign="Center" width="100%"/>
+        </content>
+	    </Panel>		 -->
+    <VBox id="_IDGenVBox5">
+        <FlexBox
+            id="_IDGenFlexBox1M"
+            justifyContent="Center"
+            class="sapUiSmallMargin"
+        >
+            <Title
+                id="_IDGenTiMtle1"
+                text="Finish Goods Expiry Date"
+                class="Header_text_color"
+                level="H1"
+            />
+        </FlexBox>
+    </VBox>
+    <FlexBox
+        id="_IDGenFlexBox1"
+        justifyContent="Center"
+        class="sapUiSmallMargin"
+    >
+        <Title
+            id="_IDGenTitle1"
+            class="Header_text_color"
+            level="H1"
+        />
+
+        <VBox id="_IDGenVBox4">
+            <VBox
+                id="_IDGenVBox21"
+                class="sapUiSmallMarginEnd"
+            >
+                <Label
+                    id="_IDGenLabel3"
+                    text="Material"
+                    class="Header_text_color"
+                />
+                <!-- <ComboBox id="_IDGenMultiComboBox1"
+                                            name="Product" width="700px"
+                                            selectionChange=".onSelectionChange"
+                                            items="{
+                                                path: 'data>/tabItems',
+                                                templateShareable: true
+                                            }"
+                                        >
+                                            <core:Item id="_IDGenItem1" key="{data>sfc}" text="{data>Product}"/>
+                                        </ComboBox> -->
+                <MultiInput
+                    id="inputOrder"
+                    showValueHelp="true"
+                    valueHelpRequest=".onValueHelpRequest"
+                    width="700px"
+                />
+
+              
+                <Label
+                    id="_IDGenLabel485"
+                    text="Batch Number"
+                    class="Header_text_color"
+                />
+               <MultiInput
+                    id="inputbatch"
+                    showValueHelp="true"
+                    valueHelpRequest=".onValueHelpRequestbatch"
+                    width="700px"
+                />
+                <Label
+                    id="_IDGenLabel458"
+                    text="Manufacturing Date"
+                    class="Header_text_color"
+                />
+                <!-- <Input
+                            id="inputTarget15i"
+                            value="{data>productionDate}"
+                            editable="false"
+                        /> -->
+                <Input
+                    id="inputTarget15i"
+                    value="{path: 'data>/batches/productionDate', formatter: 'company.custom.plugins.expiryPlugin.model.Formatter.formatDate'}"
+                    editable="false"
+                />
+
+                <Label
+                    id="_IDGenLabel485n"
+                    text="Shelf Life"
+                    class="Header_text_color"
+                />
+                <!-- <Input
+                            id="inputTarget195n"
+                            value="{data>shelfLifeExpirationDate}"
+                            editable="false"
+                        /> -->
+                <Input
+                    id="inputTarget195n"
+                    value="{path: 'data>/batches/shelfLifeExpirationDate', formatter: 'company.custom.plugins.expiryPlugin.model.Formatter.formatShelfLife'}"
+                    editable="false"
+                />
+
+                <Label
+                    id="_IDGenLabel4"
+                    text="Expiry Date Correction"
+                    class="Header_text_color"
+                />
+                <!-- <DateRangeSelection id="dateRange" /> -->
+                <!-- <Label id="_IDGenLabel2" text="DatePicker with given Value and Formatter" labelFor="DP2"/> -->
+                <DatePicker
+                    id="myDatePicker"
+                    valueFormat="yyyy-MM-dd"
+                    displayFormat="yyyy-MM-dd"
+                    placeholder="Select a date"
+                />
+
+                <HBox id="_IDGenHBox1">
+                    <FlexBox
+                        id="_IDGenFlexBox2"
+                        justifyContent="Center"
+                    >
+                        <Button
+                            id="_IDGenButton1"
+                            press="onSubmit"
+                            type="Emphasized"
+                            class="sapUiSmallMargin"
+                            icon="sap-icon://save"
+                            text="Save"
+                            width="100px"
+                        />
+                        <!-- <Button id="_IDGenButton2" press="onClear" type="Emphasized" class="sapUiSmallMargin" text="Print" width="130px"
+			   ariaHasPopup="None"></Button> -->
+                        <Button
+                            id="_IDGenButton"
+                            icon="sap-icon://print"
+                            tooltip="Print"
+                            press=".onPrint"
+                            text="Print"
+                            class="sapUiSmallMargin"
+                        />
+                        
+                        <Button id="clearButton" text="Clear" icon="sap-icon://clear-filter" press=".onClearFilters"/>
+                    </FlexBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </FlexBox>
+</mvc:View>

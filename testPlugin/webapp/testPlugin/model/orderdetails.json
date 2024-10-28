@@ -1,0 +1,46 @@
+
+{
+    "rows": [
+      {
+        "batchNumber": "pizza",
+        "BOM": "Sunflower",
+        "toleranceUnder": "220",
+        "minDeliveryQuantity": 20,
+        "toleranceOver": 100,
+        "maxDeliveryQuantity": 200,
+        "customValues": "pizza",
+        "customer": "Somya"
+      },
+      {
+        "batchNumber": "pasta",
+        "BOM": "Chicken",
+        "toleranceUnder": "240",
+        "minDeliveryQuantity": 50,
+        "toleranceOver": 200,
+        "maxDeliveryQuantity": 200,
+        "customValues": "pizza",
+        "customer": "Shad"
+      },
+      {
+        "batchNumber": "pasta",
+        "BOM": "Chicken",
+        "toleranceUnder": "240",
+        "minDeliveryQuantity": 50,
+        "toleranceOver": 200,
+        "maxDeliveryQuantity": 200,
+        "customValues": "pizza",
+        "customer": "Shad"
+      },
+      {
+        "batchNumber": "Burger",
+        "BOM": "Sunflower",
+        "toleranceUnder": "560",
+        "minDeliveryQuantity": 20,
+        "toleranceOver": 100,
+        "maxDeliveryQuantity": 200,
+        "customValues": "Pasta",
+        "customer": "Ankit"
+      }
+      
+    ]
+  }
