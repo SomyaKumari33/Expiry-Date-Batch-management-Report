@@ -117,15 +117,15 @@
                             value="{data>productionDate}"
                             editable="false"
                         /> -->
-                <Input
+                <!-- <Input
                     id="inputTarget15i"
                     value="{path: 'data>/batches/productionDate', formatter: 'company.custom.plugins.expiryPlugin.model.Formatter.formatDate'}"
                     editable="false"
-                />
+                /> -->
 
                 <Label
                     id="_IDGenLabel485n"
-                    text="Shelf Life"
+                    text="Current Expiry date"
                     class="Header_text_color"
                 />
                 <!-- <Input
@@ -138,7 +138,7 @@
                     value="{path: 'data>/batches/shelfLifeExpirationDate', formatter: 'company.custom.plugins.expiryPlugin.model.Formatter.formatShelfLife'}"
                     editable="false"
                 />
-
+ 
                 <Label
                     id="_IDGenLabel4"
                     text="Expiry Date Correction"
@@ -177,8 +177,15 @@
                             text="Print"
                             class="sapUiSmallMargin"
                         />
+                         <Button
+                            id="clearButton"
+                            icon="sap-icon://clear-filter"
+                            tooltip="Print"
+                            press=".onClearFilters"
+                            text="Clear"
+                            class="sapUiSmallMargin"
+                        />
                         
-                        <Button id="clearButton" text="Clear" icon="sap-icon://clear-filter" press=".onClearFilters"/>
                     </FlexBox>
                 </HBox>
             </VBox>

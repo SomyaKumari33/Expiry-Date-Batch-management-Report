@@ -18,7 +18,7 @@ sap.ui.define([
     return PluginViewController.extend("company.custom.plugins.expiryPlugin.expiryPlugin.controller.MainView", {
         onInit: function () {
             PluginViewController.prototype.onInit.apply(this, arguments);
-            // Create and set the data model for the view
+            // Create and set the data model for the view 
             var oModel = new JSONModel();
             this.getView().setModel(oModel, "data");
 
@@ -31,7 +31,7 @@ sap.ui.define([
             var oParameters = {
                 plant: 'M206',
                 page: '1,2,3,4,5,6,7,8,9,10',
-                size: '500'
+                size: '1000'
             }; // Plant parameter for Order API
 
             // Fetch data from the Order API
@@ -58,47 +58,45 @@ sap.ui.define([
             var oModel = this.getView().getModel("data");
             oModel.setProperty("/orders", OrderData);
         },
-        // Function to handle material selection and fetch batch data based on the selected material
-onMaterialSelection: function (sSelectedMaterial) {
-    // Fetch batch data based on the selected material
-    this._fetchBatchData(sSelectedMaterial);
-},
 
-_fetchBatchData: function (sMaterial) {
-    var that = this;
-    var oBatchParams = { plant: 'M206', material: sMaterial };
-    var sBatchUrl = this.getPublicApiRestDataSourceUri() + '/inventory/v1/batches';
+        _fetchBatchData: function (sMaterial) {
+            var that = this;
+            var oBatchParams = { plant: 'M206', material: sMaterial };
+            var sBatchUrl = this.getPublicApiRestDataSourceUri() + '/inventory/v1/batches';
 
-    // Fetch data from the Batch API
-    this.ajaxGetRequest(sBatchUrl, oBatchParams, function (oBatchResponseData) {
-        if (oBatchResponseData && oBatchResponseData.content) {
-            that.setBatchData(oBatchResponseData);
-            console.log("Batch data loaded successfully:", oBatchResponseData.content);
-        } else {
-            console.log("No batch data received:", oBatchResponseData);
-        }
-    }, function (oError, sHttpErrorMessage) {
-        that.handleErrorMessage(oError, sHttpErrorMessage);
-    });
-},
+            // Fetch data from the Batch API
+            this.ajaxGetRequest(sBatchUrl, oBatchParams, function (oBatchResponseData) {
+                that.setBatchData(oBatchResponseData);
+            }, function (oError, sHttpErrorMessage) {
+                that.handleErrorMessage(oError, sHttpErrorMessage);
+            });
+        },
         // Set Batch Data
 
         setBatchData: function (oBatchResponseData) {
             var aBatchData = oBatchResponseData.content.map(function (batch) {
                 return {
                     batchNumber: batch.batchNumber,
-                    productionDate: this.formatDate(batch.productionDate),
-                    shelfLifeExpirationDate: batch.shelfLifeExpirationDate ? this.formatDate(batch.shelfLifeExpirationDate) : "N/A",
+                    //   productionDate: this.formatDate(batch.productionDate),
+                    //   shelfLifeExpirationDate: batch.shelfLifeExpirationDate ? this.formatDate(batch.shelfLifeExpirationDate) : "N/A",
+                    productionDate: new Date(batch.productionDate),
+                    shelfLifeExpirationDate: new Date(batch.shelfLifeExpirationDate)
                 };
             }, this); // Pass 'this' to maintain context
 
             // Update the model with the batch data for binding
             var oModel = this.getView().getModel("data");
             oModel.setProperty("/batches", aBatchData); // Assuming you have a path for batches
-        
 
-         
-        
+
+            //If you want to auto-populate UI fields
+            //  if (aBatchData.length > 0) {
+            //    var batch = aBatchData[0]; // Use the first batch for auto-population
+            //    this.byId("inputbatch").setValue(batch.batchNumber);
+            //    this.byId("inputTarget15i").setValue(batch.productionDate);
+            //   this.byId("inputTarget195n").setValue(batch.shelfLifeExpirationDate);
+            // }
+
         },
 
 
@@ -136,7 +134,7 @@ _fetchBatchData: function (sMaterial) {
                     var aSelectedItems = oEvent.getParameter("tokens");
                     if (aSelectedItems && aSelectedItems.length) {
                         var sSelectedOrder = aSelectedItems[0].getKey();
-                        // this._populateSingleOrderData(sSelectedOrder);
+                        this._populateSingleOrderData(sSelectedOrder);
                     }
                     oInput.setTokens(aSelectedItems);
                     this.oValueHelpDialog.close();
@@ -173,7 +171,7 @@ _fetchBatchData: function (sMaterial) {
             this.oTable.addColumn(new Column({
                 label: new Text({ text: "Material" }),
                 template: new Text({ text: "{data>material}" }),
-                width: "150px"
+                width: "170px"
             }));
 
             this.oTable.addColumn(new Column({
@@ -197,7 +195,7 @@ _fetchBatchData: function (sMaterial) {
             // Set Filter Bar and Table to the Value Help Dialog
             this.oValueHelpDialog.setFilterBar(oFilterBar);
             this.oValueHelpDialog.setTable(this.oTable);
-            this.oValueHelpDialog.setContentWidth("800px");
+            this.oValueHelpDialog.setContentWidth("700px");
 
             // Open the dialog if order data is available
             if (this.getView().getModel("data").getProperty("/orders")) {
@@ -206,8 +204,35 @@ _fetchBatchData: function (sMaterial) {
         },
 
 
-       
-       
+        _populateSingleOrderData: function (sSelectedOrder) {
+            var oModel = this.getView().getModel("data");
+            var aItems = oModel.getProperty("/orders") || [];
+
+            // Find the selected order data based on material
+            var oSelectedOrderData = aItems.find(function (item) {
+                return item.material === sSelectedOrder;
+            });
+
+            if (oSelectedOrderData) {
+                // Set initial values based on material selection
+                this.byId("inputbatch").setValue(oSelectedOrderData.batchNumber);
+
+                // Fetch batch data based on material
+                this._fetchBatchData(oSelectedOrderData.material); // Call to fetch batch data
+            }
+        },
+        //     var oSelectedOrderData = aItems.find(function (item) {
+        //         item.batchNumber === sSelectedOrder;
+        //     });
+        //     if (oSelectedOrderData) {
+        //         // Set  batch number to inputs
+        //         this.byId("inputTarget15i").setValue(oSelectedOrderData.productionDate);
+        //         this.byId("inputTarget195n").setValue(oSelectedOrderData.shelfLifeExpirationDate);
+
+        //         // Fetch batch data for the selected material
+        //         this._fetchBatchData(oSelectedOrderData.material); // Call to fetch batch data
+        //     }
+        // },
 
 
         onSearch: function (oEvent) {
@@ -233,14 +258,13 @@ _fetchBatchData: function (sMaterial) {
 
         onValueHelpRequestbatch: function (oEvent) {
             var oInput = oEvent.getSource();
-        
-            // Destroy existing dialog if present
+
             if (this.oValueHelpDialog) {
                 this.oValueHelpDialog.destroy();
             }
-        
+
             // Create Value Help Dialog for single selection
-            this.oValueHelpDialog = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
+            this.oValueHelpDialog = new ValueHelpDialog({
                 title: "Select Batch Number",
                 supportMultiselect: false,
                 key: 'batchNumber',
@@ -249,7 +273,7 @@ _fetchBatchData: function (sMaterial) {
                     if (aSelectedItems && aSelectedItems.length) {
                         var sSelectedBatch = aSelectedItems[0].getKey();
                         this._onBatchNumberSelection(sSelectedBatch);  // Correct function call
-                        oInput.setValue(sSelectedBatch);  // Set selected batch to input field
+                        oInput.setTokens(aSelectedItems);
                     }
                     this.oValueHelpDialog.close();
                 }.bind(this),
@@ -257,9 +281,9 @@ _fetchBatchData: function (sMaterial) {
                     this.oValueHelpDialog.close();
                 }.bind(this)
             });
-        
+
             // Create Filter Bar
-            var oFilterBar = new sap.ui.comp.filterbar.FilterBar({
+            var oFilterBar = new FilterBar({
                 advancedMode: false,
                 search: this.onSearch.bind(this),
                 filterGroupItems: [
@@ -268,56 +292,54 @@ _fetchBatchData: function (sMaterial) {
                         name: "batchNumber",
                         label: "Batch Number",
                         control: new sap.m.Input({
-                            placeholder: "Search for batchNumber..."
+                            placeholder: "Search for batchNumber...",
+                            value: ""
                         })
                     })
                 ]
             });
-        
-            // Create the table for displaying batches
+
+            // Create the table for displaying orders
             this.oTable = new sap.ui.table.Table(this.createId("orderTable"), {
                 visibleRowCount: 4,
                 selectionMode: "Single" // Set to single selection
             });
-        
+
             // Add columns to the table
-            this.oTable.addColumn(new sap.ui.table.Column({
-                label: new sap.m.Text({ text: "Batch Number" }),
-                template: new sap.m.Text({ text: "{data>batchNumber}" }),
+            this.oTable.addColumn(new Column({
+                label: new Text({ text: "Batch Number" }),
+                template: new Text({ text: "{data>batchNumber}" }),
                 width: "150px"
             }));
-        
-            this.oTable.addColumn(new sap.ui.table.Column({
-                label: new sap.m.Text({ text: "Shelf Life Expiration Date" }),
-                template: new sap.m.Text({ text: "{data>shelfLifeExpirationDate}" }),
+
+            this.oTable.addColumn(new Column({
+                label: new Text({ text: "shelfLifeExpirationDate" }),
+                template: new Text({ text: "{data>shelfLifeExpirationDate}" }),
                 width: "200px"
             }));
-        
-            this.oTable.addColumn(new sap.ui.table.Column({
-                label: new sap.m.Text({ text: "Production Date" }),
-                template: new sap.m.Text({ text: "{data>productionDate}" }),
+
+            this.oTable.addColumn(new Column({
+                label: new Text({ text: "productionDate" }),
+                template: new Text({ text: "{data>productionDate}" }),
                 width: "150px"
             }));
-        
+
+
+
             // Bind data to the table
             this.oTable.setModel(this.getView().getModel("data"), "data");
             this.oTable.bindRows("data>/batches");
-        
+
             // Set Filter Bar and Table to the Value Help Dialog
             this.oValueHelpDialog.setFilterBar(oFilterBar);
             this.oValueHelpDialog.setTable(this.oTable);
             this.oValueHelpDialog.setContentWidth("800px");
-        
-            // Check if batch data is available and open the dialog
-            var aBatchData = this.getView().getModel("data").getProperty("/batches");
-            console.log("Batch data on dialog open:", aBatchData);
-            if (aBatchData && aBatchData.length) {
+
+            // Open the dialog if order data is available
+            if (this.getView().getModel("data").getProperty("/batches")) {
                 this.oValueHelpDialog.open();
-            } else {
-                sap.m.MessageToast.show("No batch data available for the selected material");
             }
         },
-        
 
         onSearch: function (oEvent) {
             var oFilterBar = oEvent.getSource(),
@@ -341,32 +363,32 @@ _fetchBatchData: function (sMaterial) {
         },
         // Modified _populateBatchData function
         _onBatchNumberSelection: function (sSelectedBatch) {
-                var oModel = this.getView().getModel("data");
-                var aItems = oModel.getProperty("/batches") || [];
-            
-                // Find the selected batch data based on batch number
-                var oSelectedBatchData = aItems.find(function (item) {
-                    return item.batchNumber === sSelectedBatch;
-                });
-            
-                if (oSelectedBatchData) {
-                    // Update fields based on batch number selection
-                    this.byId("inputTarget15i").setValue(oSelectedBatchData.productionDate);
-                    this.byId("inputTarget195n").setValue(oSelectedBatchData.shelfLifeExpirationDate);
-                }
-            },
+            var oModel = this.getView().getModel("data");
+            var aItems = oModel.getProperty("/batches") || [];
 
-        // onSubmit: function() {
-        //     var sUrl = this.getPublicApiRestDataSourceUri() + 'https://dm-integration-test-e2xcyaot.it-cpi023-rt.cfapps.eu20-001.hana.ondemand.com/http/batchexpirydate';
+            // Find the selected batch data based on batch number
+            var oSelectedBatchData = aItems.find(function (item) {
+                return item.batchNumber === sSelectedBatch;
+            });
+
+            if (oSelectedBatchData) {
+                // Update fields based on batch number selection
+                this.byId("inputTarget15i").setValue(oSelectedBatchData.productionDate);
+                this.byId("inputTarget195n").setValue(oSelectedBatchData.shelfLifeExpirationDate);
+            }
+        },
+
+        
         onSubmit: function () {
             var sUrl = this.getPublicApiRestDataSourceUri() + '/pe/api/v1/process/processDefinitions/start?key=REG_925fdf75-b56d-4c23-a734-ed5d38b2b97e';
 
             var oView = this.getView(),
-                oMaterialInput = oView.byId('inputOrder'),  // Assuming this is the ID of the material MultiInput field
-                oBatchInput = oView.byId('inputbatch'),    // Assuming this is the ID of the batch MultiInput field
-                sExpDateNew = oView.byId('myDatePicker').getValue();
-            sBatchNo = oView.byId('inputbatch').getValue()    // Assuming this is the ID of the batch MultiInput field
+                oMaterialInput = oView.byId('inputOrder'),  // Material MultiInput field
+                oBatchInput = oView.byId('inputbatch'),     // Batch MultiInput field
+                sExpDateNew = oView.byId('myDatePicker').getValue(),
+                sExpDateCurrent = oView.byId('inputTarget195n').getValue() || "", // Initialize with empty string
 
+                sBatchNo; // Declare without initializing
 
             // Retrieve material and batchNumber tokens from VHD
             var aMaterialTokens = oMaterialInput.getTokens(),
@@ -376,30 +398,39 @@ _fetchBatchData: function (sMaterial) {
             console.log("Material Tokens:", aMaterialTokens);
             console.log("Batch Tokens:", aBatchTokens);
 
-            // Validation: Ensure material and batch number are not empty
+            // Validation: Ensure material is not empty
             if (aMaterialTokens.length === 0) {
                 sap.m.MessageToast.show("Please enter a material.");
                 return; // Prevent form submission
             }
-            // if (!sBatchNo) {
-            //     sap.m.MessageToast.show("Please enter a batch number.");
-            //     return; // Prevent form submission
-            // }
 
-            // if (aBatchTokens.length === 0) {
-            //     sap.m.MessageToast.show("Please enter a batch number.");
-            //     return; // Prevent form submission
-            // }
+            // Validate expiration dates
+            if (!sExpDateCurrent) {
+                sap.m.MessageToast.show("Please provide a valid current expiration date.");
+                return; // Exit if no date is provided
+            }
 
-            // Assuming you are selecting a single material and batch number
-            var sMaterial = aMaterialTokens[0].getKey(),  // Get the key of the first selected material token
-                sBatchNo = aBatchTokens[0].getKey();      // Get the key of the first selected batch token
+            // Create a JavaScript Date object and format it
+            var oDate = new Date(sExpDateCurrent);
+            var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({ pattern: "yyyy-MM-dd" });
+            var sFormattedDate = oDateFormat.format(oDate);
+            console.log("Formatted Expiration Date:", sFormattedDate);
+
+            // Ensure batch number is retrieved properly
+            if (aBatchTokens.length === 0) {
+                sap.m.MessageToast.show("Please enter a batch number.");
+                return; // Prevent form submission
+            }
+            sBatchNo = aBatchTokens[0].getKey(); // Get the key of the first selected batch token
+
+            // Assuming you are selecting a single material
+            var sMaterial = aMaterialTokens[0].getKey(); // Get the key of the first selected material token
 
             var oPayload = {
                 plant: "M206",
                 material: sMaterial,
                 batch: sBatchNo,
-                expiryCurr: "",
+                expiryCurr: sExpDateCurrent,
                 expiryNew: sExpDateNew
             };
 
@@ -448,6 +479,8 @@ _fetchBatchData: function (sMaterial) {
             if (oBatchInput && oBatchInput.removeAllTokens) {
                 oBatchInput.removeAllTokens();
             }
+            this.byId("inputTarget15i").setValue("");
+            this.byId("inputTarget195n").setValue("");
             this.byId("myDatePicker").setValue("");
 
         },
