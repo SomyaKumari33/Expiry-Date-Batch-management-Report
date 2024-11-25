@@ -1,0 +1,26 @@
+<core:FragmentDefinition
+xmlns:vh="sap.ui.comp.valuehelpdialog"
+xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+xmlns:fb="sap.ui.comp.filterbar"
+xmlns="sap.m"
+xmlns:core="sap.ui.core">
+<vh:ValueHelpDialog id="idStatusVHDia"
+key="status"
+title="Status"
+supportRanges="false"
+supportMultiselect="false"
+ok=".onStatusVHDiaOKPress"
+cancel=".onStatusVHDiaCancelPress">
+<vh:filterBar>
+<fb:FilterBar id="idStatusVHDiaFB" search="onStatusVHDiaSearch">
+<fb:filterGroupItems>
+<fb:FilterGroupItem id="idStatusVHDiaFB-StatusFGI" groupName="group1" visibleInFilterBar="true" name="status" label="Status">
+<fb:control>
+<Input id="idStatusVHDiaFB-StatusFGI-Input" placeholder="Search for Status...."/>
+</fb:control>
+</fb:FilterGroupItem>
+</fb:filterGroupItems>
+</fb:FilterBar>
+</vh:filterBar>
+</vh:ValueHelpDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,15 @@
+{
+	"components": [
+		{
+			"id": "expirydate",
+			"type": "VIEW_PLUGIN",
+			"allowMultipleInstances": false,
+			"name": "company.custom.plugins.expirydate.expirydate",
+			"propertyEditor": "company.custom.plugins.expirydate.expirydate.builder.PropertyEditor",
+			"i18n": "company.custom.plugins.expirydate.expirydate.i18n.i18n",
+            "productionProcessEnabled": true,
+           "productionProcessTitle": "expirydate",
+			"supportedPodTypes": ["WORK_CENTER","OPERATION","ORDER"]
+		}   
+	]
+}

@@ -37,47 +37,52 @@ height="100%">
         <content> 
             <Text id="textPlugin" text="template" class="textFontSize" textAlign="Center" width="100%"/> -->
            <f:DynamicPage id="_IDGenDynammicPage1n" headerExpanded="{/headerExpanded}">
-                <f:title>
+                <!-- <f:title>
                     <f:DynamicPageTitle id="_IDGenDynamicPageTitle1mn">
                     </f:DynamicPageTitle>
-                </f:title>
+                </f:title> -->
                 <f:header>
-                    <f:DynamicPageHeader id="_IDGenDynanmicPmageHeader1">
+                    <f:DynamicPageHeader id="_IDGenDynanmicPmageHeader1" pinnable="false">
                         <f:content>
                             <VBox>
                                 <fb:FilterBar id="filternbars" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
                                     <fb:filterGroupItems>
                                         <fb:FilterGroupItem id="filterOrder" name="order" mandatory="true" label="Order" groupName="Group1" visibleInFilterBar="true">
                                             <fb:control>
-                                                <ComboBox id="orderComboBox"
-                                                          name="order"
-                                                          selectionChange=".onSelectionChange"
-                                                          items="{
-                                                              path: 'data>/tabItems',
-                                                              templateShareable: true
-                                                          }">
-                                                    <core:Item id="_IDGennItenm4" key="{key>releasable}" text="{data>order}" />
-                                                </ComboBox>
+                                              
+                                                <Input 
+                        id="IdOrderInput" 
+                        showValueHelp="true"
+                        valueHelpRequest="onOrderValueHelpRequest"
+                        value="{data>/order}"
+                         valueState="{data>/controls/resourceInput/valueState}"
+                        valueStateText="{data>/controls/resourceInput/valueStateText}"
+                        
+                        change=".onOrderInputChange"
+                        required="true" />
+                       
                                             </fb:control>
                                         </fb:FilterGroupItem>
 
                                         <fb:FilterGroupItem id="filterWorkCenter" name="status" label="Status" groupName="Group1" visibleInFilterBar="true" mandatory="true">
                                             <fb:control>
-                                                <ComboBox id="workCenterComboBox"
-                                                          name="status"
-                                                          selectionChange=".onSelectionChange"
-                                                          items="{
-                                                              path: 'data>/tabItems',
-                                                              templateShareable: true
-                                                          }">
-                                                    <core:Item id="_IDGenItem6" key="{data>material}" text="{data>status}"/>
-                                                </ComboBox>
+                                                     <Input 
+                        id="IdStatusInput" 
+                        showValueHelp="true"
+                        valueHelpRequest="onStatusValueHelpRequest"
+                        value="{data>/status}"
+                         valueState="{data>/controls/resourceInput/valueState}"
+                        valueStateText="{data>/controls/resourceInput/valueStateText}"
+                        
+                        change=".onStatusInputChange"
+                        required="true" />
+                                              
                                             </fb:control>
                                         </fb:FilterGroupItem>
 
                                         <fb:FilterGroupItem id="filterMaterial" name="material/material" label="Material" groupName="Group1" visibleInFilterBar="true" mandatory="true">
                                             <fb:control>
-                                                <ComboBox id="materialComboBox"
+                                                <!-- <ComboBox id="materialComboBox"
                                                           name="material/material"
                                                           selectionChange=".onSelectionChange"
                                                           items="{
@@ -85,7 +90,17 @@ height="100%">
                                                               templateShareable: true
                                                           }">
                                                     <core:Item id="_IDGenItcem6" key="{data>orderNo}" text="{data>material/material}"/>
-                                                </ComboBox>
+                                                </ComboBox> -->
+
+                                                <Input 
+                        id="IdMaterialInput" 
+                        showValueHelp="true"
+                        valueHelpRequest="onMaterialValueHelpRequest"
+                        value="{data>/material/material}"
+                        valueState="{data>/controls/resourceInput/valueState}"
+                        valueStateText="{data>/controls/resourceInput/valueStateText}"
+                        change=".onMaterialInputChange"
+                        required="true" />
                                             </fb:control>
                                         </fb:FilterGroupItem>
                                     </fb:filterGroupItems>

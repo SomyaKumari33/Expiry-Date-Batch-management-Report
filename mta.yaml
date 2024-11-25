@@ -13,7 +13,7 @@ modules:
     httpHeaders:
        - X-Frame-Options: deny
     CORS: "[{\"uriPattern\": \"^/testPlugin/(.*)$\",\"allowedOrigin\": [
-           {\"host\": \"daajan-dmc-test-gpjlw2wc.test.execution.eu20.dmc.cloud.sap\",\"protocol\": \"https\"}],
+           {\"host\": \"daajan-dmc-test-gpjlw2wc.execution.eu20-quality.web.dmc.cloud.sap\",\"protocol\": \"https\"}],
            \"allowedMethods\": [\"GET\",\"OPTIONS\"],
            \"allowedHeaders\":[\"Origin\", \"Accept\",\"X-Requested-With\",\"Content-Type\",
            \"Access-Control-Request-Method\",\"Access-Control-Request-Headers\",\"Authorization\",
